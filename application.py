@@ -24,39 +24,60 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
-
-
-
-#data = str(res.json()["books"][0]["work_reviews_count"])
-#return data
-
-stored_username = "john"
-stored_password = "123"
-
-
 @app.route("/", methods=["GET", "POST"])
 def index():
 
-    # Ask user to login if at homepage and have no session
-    if request.method == "GET" and session.get("user_id") is None:
-        return render_template("login.html")
+    if request.method == "GET":
 
-    # Set session if credentials match database otherwise redirect
-    elif request.method == "POST":
+        if session.get("user_id") is not None:
+            return redirect("/search")
+        else:
+            return render_template("login.html")
 
+    if request.method == "POST":
+        
         username = request.form.get("username")
         password = request.form.get("password")
 
-        if stored_username == username and stored_password == password:
-            session["user_id"] = username
-            print(session["user_id"])
-        else:
-            # Temporary?
+        # Redirect if missing fields
+        if username == "" or password == "":
             return redirect("/")
 
-    # A session has been created
-    if session.get("user_id") is not None:
-        return redirect("/search")
+        user = db.execute("""
+            SELECT * FROM users WHERE username = :username""",
+            {"username": username}).fetchone()
+
+        # If Login button pressed
+        if request.form["button"] == "login":
+            
+            if user.rowcount() != 0 and user.password == password:
+                session["user_id"] = user.id
+                return redirect("/search")
+            else:
+                print("Username or password incorrect")
+                return redirect("/")
+
+        # If Register button pressed
+        elif request.form["button"] == "register":
+            
+            if user.rowcount() == 0:
+                db.execute("""
+                    INSERT INTO users (username, password) VALUES (:username, :password)""",
+                    {"username": username, "password": password})
+                db.commit()
+
+                user = db.execute("""
+                    SELECT id FROM users WHERE username = :username""",
+                    {"username": username}).fetchone()
+
+                session["user_id"] = user.id
+
+                print("Registered user")
+                return redirect("/search")
+
+            else:
+                print("User already exists")
+                return redirect("/")
 
 
 @app.route("/search", methods=["GET", "POST"])

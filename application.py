@@ -1,4 +1,6 @@
 import config
+import hashlib
+import uuid
 import os
 import requests
 
@@ -28,7 +30,6 @@ db = scoped_session(sessionmaker(bind=engine))
 def index():
 
     if request.method == "GET":
-
         if session.get("user_id") is not None:
             return redirect("/search")
         else:
@@ -41,6 +42,7 @@ def index():
 
         # Redirect if missing fields
         if username == "" or password == "":
+            print("Missing fields")
             return redirect("/")
 
         user = db.execute("""
@@ -49,22 +51,30 @@ def index():
 
         # If Login button pressed
         if request.form["button"] == "login":
-            
-            if user.rowcount() != 0 and user.password == password:
-                session["user_id"] = user.id
-                return redirect("/search")
-            else:
-                print("Username or password incorrect")
-                return redirect("/")
+
+            if user is not None:
+                hashed_password = hashlib.sha256((password + user.salt).encode('utf-8')).hexdigest()
+                if hashed_password == user.password:
+                    session["user_id"] = user.id
+                    return redirect("/search")
+
+            print("Username or password incorrect")
+            return redirect("/")
 
         # If Register button pressed
         elif request.form["button"] == "register":
             
-            if user.rowcount() == 0:
+            # Register user
+            if user is None:
+
+                salt = uuid.uuid4().hex
+                hashed_password = hashlib.sha256((password + salt).encode('utf-8')).hexdigest()
+
                 db.execute("""
-                    INSERT INTO users (username, password) VALUES (:username, :password)""",
-                    {"username": username, "password": password})
+                    INSERT INTO users (username, password, salt) VALUES (:username, :password, :salt)""",
+                    {"username": username, "password": hashed_password, "salt": salt})
                 db.commit()
+                
 
                 user = db.execute("""
                     SELECT id FROM users WHERE username = :username""",
@@ -75,16 +85,38 @@ def index():
                 print("Registered user")
                 return redirect("/search")
 
+            # User already exists
             else:
                 print("User already exists")
                 return redirect("/")
 
 
-@app.route("/search", methods=["GET", "POST"])
+@app.route("/search")
 def search():
     # User successfully logged in
-    if request.method == "GET" and session.get("user_id") is not None:
-        return render_template("search.html", username=session["user_id"])
+    if session.get("user_id") is not None:
+        
+        results = request.args.get("results")
+        books = []
+
+        if request.args.get("category") == "isbn":
+            books = db.execute("""
+                SELECT * FROM books WHERE isbn ILIKE '%' || :isbn || '%'""", 
+                {"isbn": results}).fetchall()
+
+        elif request.args.get("category") == "author":
+            books = db.execute("""
+                SELECT * FROM books WHERE author ILIKE '%' || :author || '%'""", 
+                {"author": results}).fetchall()
+
+
+        elif request.args.get("category") == "title":
+            books = db.execute("""
+                SELECT * FROM books WHERE title ILIKE '%' || :title || '%'""", 
+                {"title": results}).fetchall()
+        
+        return render_template("search.html", books=books)
+
     # Accessing a route without login
     else:
         return redirect("/")
@@ -93,4 +125,5 @@ def search():
 @app.route("/logout")
 def logout():
     session.clear()
+    print("Logged out")
     return redirect("/")

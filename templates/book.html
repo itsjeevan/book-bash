@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+
+<h1>Book Details</h1>
+<h2>Book ID</h2>
+<p>{{ book.id }}</p>
+
+<h2>ISBN</h2>
+<p>{{ book.isbn }}</p>
+
+<h2>Title</h2>
+<p>{{ book.title }}</p>
+
+<h2>Author</h2>
+<p>{{ book.author }}</p>
+
+<h2>Publication Year</h2>
+<p>{{ book.year }}</p>
+
+
+<h1>Reviews</h1>
+
+<ul>
+{% for review in reviews %}
+<li>{{ review.review }} | Posted by {{ review.user_username }}</li>
+{% endfor %}
+</ul>
+
+
+<form action="{{ url_for('book', isbn=book.isbn) }}" method="post">
+    <input type="text" name="review" placeholder="Your Review">
+    <button>Post</button>
+</form>
+
+{% endblock %}

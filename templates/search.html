@@ -6,19 +6,28 @@
 
 <form action="{{ url_for('search') }}" method="get">
     <input type="text" name="results" placeholder="Search">
+
     <input type="radio" id="title" name="category" value="title" checked>
     <label for="title">Title</label>
+
     <input type="radio" id="isbn" name="category" value="isbn">
     <label for="isbn">ISBN</label>
+
     <input type="radio" id="author" name="category" value="author">
     <label for="author">Author</label>
+    
     <button>Search</button>
 </form>
 
 <ul>
-{% for book in books %}
-<li>ISBN: {{ book.isbn }}, Title: {{ book.title }}, Author: {{ book.author }}</li>
-{% endfor %}
+{% if books is not string %}
+    {% for book in books %}
+        <li><a href="{{ url_for('book', isbn=book.isbn) }}">View</a> | Title: {{ book.title }}, Author: {{ book.author }}</li>
+    {% else %}
+        <li>No results found</li>
+    {% endfor %}
+{% else %}
+    <li>{{ books }}</li>
+{% endif %}
 </ul>
-
 {% endblock %}

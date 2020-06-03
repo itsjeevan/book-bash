@@ -30,7 +30,7 @@ db = scoped_session(sessionmaker(bind=engine))
 def index():
 
     if request.method == "GET":
-        if session.get("user_id") is not None:
+        if session.get("user_username") is not None:
             return redirect("/search")
         else:
             return render_template("login.html")
@@ -55,7 +55,7 @@ def index():
             if user is not None:
                 hashed_password = hashlib.sha256((password + user.salt).encode('utf-8')).hexdigest()
                 if hashed_password == user.password:
-                    session["user_id"] = user.id
+                    session["user_username"] = user.username
                     return redirect("/search")
 
             print("Username or password incorrect")
@@ -80,7 +80,7 @@ def index():
                     SELECT id FROM users WHERE username = :username""",
                     {"username": username}).fetchone()
 
-                session["user_id"] = user.id
+                session["user_username"] = user.username
 
                 print("Registered user")
                 return redirect("/search")
@@ -94,12 +94,17 @@ def index():
 @app.route("/search")
 def search():
     # User successfully logged in
-    if session.get("user_id") is not None:
+    if session.get("user_username") is not None:
         
         results = request.args.get("results")
-        books = []
 
-        if request.args.get("category") == "isbn":
+        if results is None:
+            books = "Start searching!"
+        
+        elif not results:
+            books = "No results found"
+
+        elif request.args.get("category") == "isbn":
             books = db.execute("""
                 SELECT * FROM books WHERE isbn ILIKE '%' || :isbn || '%'""", 
                 {"isbn": results}).fetchall()
@@ -114,13 +119,46 @@ def search():
             books = db.execute("""
                 SELECT * FROM books WHERE title ILIKE '%' || :title || '%'""", 
                 {"title": results}).fetchall()
-        
+
         return render_template("search.html", books=books)
 
     # Accessing a route without login
     else:
         return redirect("/")
     
+@app.route("/book/<string:isbn>", methods=["GET", "POST"])
+def book(isbn):
+
+    book = db.execute("""
+        SELECT * FROM books WHERE isbn = :isbn""",
+        {"isbn": isbn}).fetchone()
+
+    reviews = db.execute("""
+        SELECT * FROM reviews WHERE book_isbn = :book_isbn ORDER BY id DESC""",
+        {"book_isbn": book.isbn}).fetchall()
+
+    if request.method == "GET" and session.get("user_username") is not None:
+        return render_template("book.html", book=book, reviews=reviews)
+
+    elif request.method == "POST" and session.get("user_username") is not None:
+        review = request.form.get("review")
+
+        db.execute("""
+            INSERT INTO reviews (book_isbn, user_username, review) 
+            VALUES (:book_isbn, :user_username, :review)""",
+            {"book_isbn": book.isbn, "user_username": session["user_username"], "review": review})
+        db.commit()
+
+        reviews = db.execute("""
+            SELECT * FROM reviews WHERE book_isbn = :book_isbn ORDER BY id DESC""",
+            {"book_isbn": book.isbn}).fetchall()
+
+        return render_template("book.html", book=book, reviews=reviews)
+
+    else:
+        return redirect("/")
+
+
 
 @app.route("/logout")
 def logout():

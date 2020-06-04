@@ -19,19 +19,29 @@
 <h2>Publication Year</h2>
 <p>{{ book.year }}</p>
 
+<h1>Goodreads</h1>
+<p>Review Count: {{ review_count }}</p>
+<p>Average Rating: {{ average_rating }}</p>
 
 <h1>Reviews</h1>
 
-<ul>
-{% for review in reviews %}
-<li>{{ review.review }} | Posted by {{ review.user_username }}</li>
-{% endfor %}
-</ul>
-
-
 <form action="{{ url_for('book', isbn=book.isbn) }}" method="post">
+    <select name="rating">
+        <option selected="true" disabled="disabled">Rating</option>
+        <option value="1">1 star</option>
+        <option value="2">2 stars</option>
+        <option value="3">3 stars</option>
+        <option value="4">4 stars</option>
+        <option value="5">5 stars</option>
+    </select>
     <input type="text" name="review" placeholder="Your Review">
     <button>Post</button>
 </form>
+
+<ul>
+{% for review in reviews %}
+<li>{{ review.review }} | Rated: {{ review.rating }} Posted by {{ review.user_username }}</li>
+{% endfor %}
+</ul>
 
 {% endblock %}

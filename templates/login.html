@@ -1,10 +1,30 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<form action="{{ url_for('index') }}" method="post">
-    <input name="username" type="text" placeholder="Username">
-    <input name="password" type="password" placeholder="Password">
-    <button name="button" value="login">Login</button>
-    <button name="button" value="register">Register</button>
-</form>
+
+<div class="row">
+
+    <div class="col-lg-5 mx-auto">
+
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Book Bash</h5>
+                <p class="card-text">Search for books, leave reviews, and more!</p>
+                
+                <form action="{{ url_for('index') }}" method="post">
+                    <div class ="form-group">
+                        <input type="text" class="form-control mb-3 {{ is_invalid }}" name="username" placeholder="Username">
+                        <input type="password" class="form-control" name="password" placeholder="Password">
+                    </div>
+                    <div class ="form-group">
+                        <button type="submit" class="btn btn-primary" name="button" value="login" >Login</button>
+                        <button type="submit" class="btn btn-success" name="button" value="register">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    
+</div>
 {% endblock %}

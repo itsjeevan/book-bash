@@ -2,32 +2,69 @@
 
 {% block body %}
 
+
 <a href="{{ url_for('logout') }}">Logout</a>
 
 <form action="{{ url_for('search') }}" method="get">
-    <input type="text" name="results" placeholder="Search">
 
-    <input type="radio" id="title" name="category" value="title" checked>
-    <label for="title">Title</label>
+    <div class="form-row form-group justify-content-center">
+        <div class="col-5">
+            <input class="form-control" name="results" type="search" placeholder="Search" aria-label="Search">
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </div>
+    </div>
 
-    <input type="radio" id="isbn" name="category" value="isbn">
-    <label for="isbn">ISBN</label>
+    <div class="form-row form-group justify-content-center">
+        <div class="col-auto">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="category" id="title" value="title" checked>
+                <label class="form-check-label" for="title">Title</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="category" id="author" value="author">
+                <label class="form-check-label" for="author">Author</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="category" id="isbn" value="isbn">
+                <label class="form-check-label" for="isbn">ISBN</label>
+            </div>
+        </div>
+    </div>
 
-    <input type="radio" id="author" name="category" value="author">
-    <label for="author">Author</label>
-    
-    <button>Search</button>
 </form>
 
-<ul>
-{% if books is not string %}
-    {% for book in books %}
-        <li><a href="{{ url_for('book', isbn=book.isbn) }}">View</a> | Title: {{ book.title }}, Author: {{ book.author }}</li>
-    {% else %}
-        <li>No results found</li>
-    {% endfor %}
-{% else %}
-    <li>{{ books }}</li>
-{% endif %}
-</ul>
-{% endblock %}
+<div class="row justify-content-center mt-5">
+
+    <div class="col-auto">
+
+        {% if books is not string %}
+        
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ISBN</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Publication Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                    {% for book in books %}
+                        <tr>
+                            <td><a href="{{ url_for('book', isbn=book.isbn) }}">{{ book.isbn }}</a></td>
+                            <td>{{ book.title }}</td>
+                            <td>{{ book.author }}</td>
+                            <td>{{ book.year }}</td>
+                        </tr>
+                    {% endfor %}
+                
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+    
+</div>
+{% endblock %} -->

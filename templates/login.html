@@ -2,14 +2,24 @@
 
 {% block body %}
 
-<div class="row">
+<div class="row justify-content-center mb-3">
 
-    <div class="col-lg-5 mx-auto">
+    <div class="col-auto text-center">
+        <img src="/static/images/book.png" width="200" height="200">
+        <h1>Book Bash</h1>
+    </div>
+    
+</div>
+
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-5">
 
         <div class="card text-center">
             <div class="card-body">
-                <h5 class="card-title">Book Bash</h5>
-                <p class="card-text">Search for books, leave reviews, and more!</p>
+                <h5 class="card-title">Welcome!</h5>
+                <p class="card-text">Search for books, rate and review with help from Goodreads, and more!</p>
                 
                 <form action="{{ url_for('index') }}" method="post">
                     <div class ="form-group">

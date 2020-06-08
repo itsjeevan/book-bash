@@ -30,6 +30,10 @@ db = scoped_session(sessionmaker(bind=engine))
 @app.route("/", methods=["GET", "POST"])
 def index():
 
+    # Form validation flags
+    is_invalid = False
+    invalid_feedback = False
+
     if request.method == "GET":
         # Check if a user session exists
         if session.get("user_username") is not None:
@@ -40,10 +44,13 @@ def index():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
+        
 
         # Redirect if missing fields
         if username == "" or password == "":
-            return redirect("/")
+            is_invalid = True
+            invalid_feedback = "All fields required."
+            return render_template("login.html", is_invalid = is_invalid, invalid_feedback = invalid_feedback)
 
         # Get user's data from table
         user = db.execute("""
@@ -59,7 +66,10 @@ def index():
                 if hashed_password == user.password:
                     session["user_username"] = user.username
                     return redirect("/search")
-            return redirect("/")
+
+            is_invalid = True
+            invalid_feedback = "Username and password doesn't match."
+            return render_template("login.html", is_invalid = is_invalid, invalid_feedback = invalid_feedback)
 
         # If Register button pressed
         elif request.form.get("button") == "register":
@@ -82,7 +92,9 @@ def index():
 
             # User already exists
             else:
-                return redirect("/")
+                is_invalid = True
+                invalid_feedback = "User already exists."
+                return render_template("login.html", is_invalid = is_invalid, invalid_feedback = invalid_feedback)
 
 
 # Search for a book

@@ -104,31 +104,32 @@ def search():
     # User session exists
     if session.get("user_username") is not None:
         
-        results = request.args.get("results")
-
-        if results is None:
-            books = "Start searching!"
+        query = request.args.get("query")
         
-        elif not results:
-            books = "No results found"
+        # Return nothing if query empty
+        if query is None or query == "":
+            return render_template("search.html")
 
-        elif request.args.get("category") == "isbn":
+        # Query table
+        if request.args.get("category") == "title":
             books = db.execute("""
-                SELECT * FROM books WHERE isbn ILIKE '%' || :isbn || '%'""", 
-                {"isbn": results}).fetchall()
-
+                SELECT * FROM books WHERE title ILIKE '%' || :title || '%'""", 
+                {"title": query})
         elif request.args.get("category") == "author":
             books = db.execute("""
                 SELECT * FROM books WHERE author ILIKE '%' || :author || '%'""", 
-                {"author": results}).fetchall()
-
-
-        elif request.args.get("category") == "title":
+                {"author": query})
+        elif request.args.get("category") == "isbn":
             books = db.execute("""
-                SELECT * FROM books WHERE title ILIKE '%' || :title || '%'""", 
-                {"title": results}).fetchall()
+                SELECT * FROM books WHERE isbn ILIKE '%' || :isbn || '%'""", 
+                {"isbn": query})
 
-        return render_template("search.html", books = books)
+        # If results found, set flag
+        results = False
+        if books.rowcount != 0:
+            results = True
+
+        return render_template("search.html", query = query, results = results, books = books)
 
     # Redirect if no user session exists
     else:

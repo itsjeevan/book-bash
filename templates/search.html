@@ -2,26 +2,16 @@
 
 {% block body %}
 
-
-<div class="row justify-content-center mb-3">
-
-    <div class="col-auto text-center">
-        <img src="/static/images/book.png" width="200" height="200">
-        <h1>Book Bash</h1>
-    </div>
-    
-</div>
-
-<nav class="nav justify-content-center mb-3">
+<nav class="nav justify-content-center">
     <a class="nav-link disabled" href="{{ url_for('search') }}">Home</a>
     <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
 </nav>
 
-<form action="{{ url_for('search') }}" method="get" class="mb-5">
+<form action="{{ url_for('search') }}" method="get">
     
     <div class="form-row form-group justify-content-center">
         <div class="col-5">
-            <input class="form-control" name="results" type="search" placeholder="Search" aria-label="Search">
+            <input class="form-control" name="query" type="search" placeholder="Search" {% if query %}value="{{ query }}" {% endif %}aria-label="Search">
         </div>
         <div class="col-auto">
             <button class="btn btn-outline-success" type="submit">Search</button>
@@ -47,36 +37,38 @@
     
 </form>
 
+{% if query %}
 <div class="row justify-content-center">
     
     <div class="col-9">
         
-        {% if books is not string %}
-        
-        <table class="table table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">ISBN</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Author</th>
-                    <th scope="col">Publication Year</th>
-                </tr>
-            </thead>
-            <tbody>
-                
-                    {% for book in books %}
-                        <tr>
-                            <td><a href="{{ url_for('book', isbn=book.isbn) }}">{{ book.isbn }}</a></td>
-                            <td>{{ book.title }}</td>
-                            <td>{{ book.author }}</td>
-                            <td>{{ book.year }}</td>
-                        </tr>
-                    {% endfor %}
-                
-            </tbody>
-        </table>
+        {% if results %}
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ISBN</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Publication Year</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for book in books %}
+                    <tr>
+                        <td><a href="{{ url_for('book', isbn=book.isbn) }}">{{ book.isbn }}</a></td>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.year }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-center">No results found</p>
         {% endif %}
+        
     </div>
     
 </div>
+{% endif %}
 {% endblock %} -->

@@ -3,7 +3,7 @@
 {% block body %}
 
 <nav class="nav justify-content-center">
-    <a class="nav-link disabled" href="{{ url_for('search') }}">Home</a>
+    <a class="nav-link disabled" href="{{ url_for('search') }}">Search</a>
     <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
 </nav>
 
@@ -14,7 +14,7 @@
             <input class="form-control" name="query" type="search" placeholder="Search" {% if query %}value="{{ query }}" {% endif %}aria-label="Search">
         </div>
         <div class="col-auto">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <button class="btn btn-success" type="submit">Search</button>
         </div>
     </div>
     
@@ -40,7 +40,7 @@
 {% if query %}
 <div class="row justify-content-center">
     
-    <div class="col-9">
+    <div class="col-lg-9">
         
         {% if results %}
             <table class="table table-hover">
@@ -49,7 +49,7 @@
                         <th scope="col">ISBN</th>
                         <th scope="col">Title</th>
                         <th scope="col">Author</th>
-                        <th scope="col">Publication Year</th>
+                        <th scope="col">Year</th>
                     </tr>
                 </thead>
                 <tbody>

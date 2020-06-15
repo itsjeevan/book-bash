@@ -10,7 +10,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 app = Flask(__name__, static_url_path = '/static', static_folder = "static")
-key = config.key
+api_key = config.api_key
 
 # Check for environment variable
 if not os.getenv("DATABASE_URL"):
@@ -143,7 +143,7 @@ def book(isbn):
     # Get JSON from Goodreads
     res = requests.get("""
         https://www.goodreads.com/book/review_counts.json""", 
-        params={"key": key, "isbns": isbn})
+        params={"key": api_key, "isbns": isbn})
     
     # Check status code
     if res.status_code != 200:

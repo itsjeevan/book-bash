@@ -31,7 +31,6 @@ db = scoped_session(sessionmaker(bind=engine))
 def index():
 
     # Form validation flags
-    is_invalid = False
     invalid_feedback = False
 
     if request.method == "GET":
@@ -48,9 +47,8 @@ def index():
 
         # Redirect if missing fields
         if username == "" or password == "":
-            is_invalid = True
             invalid_feedback = "All fields required."
-            return render_template("login.html", is_invalid = is_invalid, invalid_feedback = invalid_feedback)
+            return render_template("login.html", invalid_feedback = invalid_feedback)
 
         # Get user's data from table
         user = db.execute("""
@@ -67,9 +65,8 @@ def index():
                     session["user_username"] = user.username
                     return redirect("/search")
 
-            is_invalid = True
             invalid_feedback = "Username and password doesn't match."
-            return render_template("login.html", is_invalid = is_invalid, invalid_feedback = invalid_feedback)
+            return render_template("login.html", invalid_feedback = invalid_feedback)
 
         # If Register button pressed
         elif request.form.get("button") == "register":
@@ -92,9 +89,8 @@ def index():
 
             # User already exists
             else:
-                is_invalid = True
                 invalid_feedback = "User already exists."
-                return render_template("login.html", is_invalid = is_invalid, invalid_feedback = invalid_feedback)
+                return render_template("login.html", invalid_feedback = invalid_feedback)
 
 
 # Search for a book
@@ -140,65 +136,78 @@ def search():
 @app.route("/book/<string:isbn>", methods=["GET", "POST"])
 def book(isbn):
 
-    # Get JSON from Goodreads
-    res = requests.get("""
-        https://www.goodreads.com/book/review_counts.json""", 
-        params={"key": api_key, "isbns": isbn})
-    
-    # Check status code
-    if res.status_code != 200:
-        return redirect("/")
-    
-    # Parse JSON and retrieve values
-    res = res.json()
-    review_count = res["books"][0]["work_ratings_count"]
-    average_rating = res["books"][0]["average_rating"]
-
-    # Retrieve book info from ISBN
-    book = db.execute("""
-        SELECT * FROM books WHERE isbn = :isbn""",
-        {"isbn": isbn}).fetchone()
-
-    # Retrieve review info for book
-    reviews = db.execute("""
-        SELECT * FROM reviews WHERE book_isbn = :book_isbn ORDER BY id DESC""",
-        {"book_isbn": book.isbn}).fetchall()
-
-
     # If user is logged in
     if session.get("user_username") is not None:
 
+        # Get JSON from Goodreads
+        res = requests.get("""
+            https://www.goodreads.com/book/review_counts.json""", 
+            params={"key": api_key, "isbns": isbn})
+        
+        # Check status code
+        if res.status_code != 200:
+            return redirect("/search")
+        
+        # Parse JSON and retrieve values
+        res = res.json()
+        review_count = res["books"][0]["work_ratings_count"]
+        average_rating = res["books"][0]["average_rating"]
+
+        # Retrieve book info from ISBN
+        book = db.execute("""
+            SELECT * FROM books WHERE isbn = :isbn""",
+            {"isbn": isbn}).fetchone()
+
+        # Flags
+        reviewed = False
+        invalid_feedback = False
+
+        # If leaving a review
         if request.method == "POST":
 
-            # Check if user has reviewed this book
-            if db.execute("""
-                SELECT * FROM reviews WHERE book_isbn = :book_isbn AND user_username = :user_username""",
-                {"book_isbn": isbn, "user_username": session["user_username"]}).rowcount > 0:
-                
-                return redirect("/")
-
-            # Store review in table
             review = request.form.get("review")
             rating = request.form.get("rating")
-            db.execute("""
-                INSERT INTO reviews (book_isbn, user_username, review, rating) 
-                VALUES (:book_isbn, :user_username, :review, :rating)""", {
-                "book_isbn": book.isbn, 
-                "user_username": session["user_username"], 
-                "review": review, 
-                "rating": rating})
-            db.commit()
 
-            # Query for updated reviews
-            reviews = db.execute("""
-                SELECT * FROM reviews WHERE book_isbn = :book_isbn ORDER BY id DESC""",
-                {"book_isbn": book.isbn}).fetchall()
+            # Check if fields empty
+            if review == "" or rating is None:
+                invalid_feedback = "All fields required."
+                pass
+
+            # Check if user has reviewed this book
+            elif db.execute("""
+                SELECT * FROM reviews WHERE book_isbn = :book_isbn AND user_username = :user_username""",
+                {"book_isbn": isbn, "user_username": session["user_username"]}).rowcount > 0:
+                reviewed = "You've already reviewed this book."
+
+            # Store review in table
+            else:
+                db.execute("""
+                    INSERT INTO reviews (book_isbn, user_username, review, rating) 
+                    VALUES (:book_isbn, :user_username, :review, :rating)""", {
+                    "book_isbn": book.isbn, 
+                    "user_username": session["user_username"], 
+                    "review": review, 
+                    "rating": rating})
+                db.commit()
+
+        # Query for updated reviews
+        reviews = db.execute("""
+            SELECT * FROM reviews WHERE book_isbn = :book_isbn ORDER BY id DESC""",
+            {"book_isbn": book.isbn})
+
+        # If results found, set flag
+        results = False
+        if reviews.rowcount != 0:
+            results = True
 
         return render_template("book.html", 
             book = book, 
             reviews = reviews, 
             review_count = review_count, 
-            average_rating = average_rating)
+            average_rating = average_rating,
+            results = results,
+            reviewed = reviewed,
+            invalid_feedback = invalid_feedback)
 
     # Redirect if user not logged in
     else:

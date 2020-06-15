@@ -102,9 +102,14 @@ def search():
         
         query = request.args.get("query")
         
+        # Set checked category
+        category = request.args.get("category")
+        if category is None:
+            category = "title"
+        
         # Return nothing if query empty
         if query is None or query == "":
-            return render_template("search.html")
+            return render_template("search.html", category = category)
 
         # Query table
         if request.args.get("category") == "title":
@@ -125,7 +130,7 @@ def search():
         if books.rowcount != 0:
             results = True
 
-        return render_template("search.html", query = query, results = results, books = books)
+        return render_template("search.html", query = query, results = results, books = books, category = category)
 
     # Redirect if no user session exists
     else:

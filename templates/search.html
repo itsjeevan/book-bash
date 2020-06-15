@@ -21,15 +21,15 @@
     <div class="form-row form-group justify-content-center">
         <div class="col-auto">
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="category" id="title" value="title" checked>
+                <input class="form-check-input" type="radio" name="category" id="title" value="title"{% if category == "title" %} checked{% endif %}>
                 <label class="form-check-label" for="title">Title</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="category" id="author" value="author">
+                <input class="form-check-input" type="radio" name="category" id="author" value="author"{% if category == "author" %} checked{% endif %}>
                 <label class="form-check-label" for="author">Author</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="category" id="isbn" value="isbn">
+                <input class="form-check-input" type="radio" name="category" id="isbn" value="isbn"{% if category == "isbn" %} checked{% endif %}>
                 <label class="form-check-label" for="isbn">ISBN</label>
             </div>
         </div>

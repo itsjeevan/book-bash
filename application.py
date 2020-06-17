@@ -151,12 +151,13 @@ def book(isbn):
         
         # Check status code
         if res.status_code != 200:
-            return redirect("/search")
-        
-        # Parse JSON and retrieve values
-        res = res.json()
-        review_count = res["books"][0]["work_ratings_count"]
-        average_rating = res["books"][0]["average_rating"]
+            review_count = "Not found"
+            average_rating = "Not found"
+        else:
+            # Parse JSON and retrieve values
+            res = res.json()
+            review_count = res["books"][0]["work_ratings_count"]
+            average_rating = res["books"][0]["average_rating"]
 
         # Retrieve book info from ISBN
         book = db.execute("""

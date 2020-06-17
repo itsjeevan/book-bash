@@ -8,24 +8,24 @@
     <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
 </nav>
 
-<div class="row justify-content-center mt-5">
+<div class="row justify-content-center mb-5 mt-4">
     <div class="col-md-9">
         <h2 class="display-4">{{ book.title }}</h2>
     </div>
 </div>
 
-<div class="row justify-content-center my-5">
+<div class="row justify-content-center">
 
-    <div class="col-lg-3 col-md-4">
+    <div class="col-lg-3 col-md-4 mb-5">
         
         <h3 class="mb-4">Book Info</h3>
-        <p><strong>Author: </strong>{{ book.author }}</p>
-        <p><strong>Publication Year: </strong>{{ book.year }}</p>
-        <p><strong>ISBN: </strong>{{ book.isbn }}</p>
+        <p>Author: {{ book.author }}</p>
+        <p>Publication Year: {{ book.year }}</p>
+        <p>ISBN: {{ book.isbn }}</p>
 
         <h3 class="mt-5 mb-4">Goodreads</h3>
-        <p><strong>Review Count: </strong>{{ review_count }}</p>
-        <p><strong>Average Rating: </strong>{{ average_rating }}</p>
+        <p>Review Count: {{ review_count }}</p>
+        <p>Average Rating: {{ average_rating }}</p>
 
     </div>
 
@@ -38,11 +38,11 @@
             <div class="form-group form-row">
                 <select class="form-control{% if invalid_feedback %} is-invalid{% endif %}" name="rating">
                     <option selected disabled>Rating</option>
-                    <option value="1">1 star</option>
-                    <option value="2">2 stars</option>
-                    <option value="3">3 stars</option>
-                    <option value="4">4 stars</option>
-                    <option value="5">5 stars</option>
+                    <option value="1">★☆☆☆☆</option>
+                    <option value="2">★★☆☆☆</option>
+                    <option value="3">★★★☆☆</option>
+                    <option value="4">★★★★☆</option>
+                    <option value="5">★★★★★</option>
                 </select>
             </div>
             <div class="form-group form-row">
@@ -59,14 +59,15 @@
         <p class="text-center text-danger">{{ invalid_feedback }}</p>
         {% endif %}
         
-        <h3>Reviews</h3>
+        <h3 class="mt-5 mb-4">Reviews</h3>
         
         {% if results %}
         <ul class="list-group list-group-flush">
             {% for review in reviews %}
-            <li class="list-group-item pl-0">
-                <p>{{ review.review }}</p>
-                <p><small>{{ review.user_username }}, {{ review.rating }} / 5</small></p>
+            <li class="list-group-item pl-0 py-4">
+                <p class="mb-2">{% for i in range(review.rating) %}★{% endfor %}{% for i in range(5 - review.rating) %}☆{% endfor %}</p>
+                <p class="mb-2">{{ review.review }}</p>
+                <small class="text-muted">{{ review.user_username }}</small>
             </li>
             {% endfor %}
         </ul>

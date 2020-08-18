@@ -1,11 +1,8 @@
-import config
-import hashlib
-import uuid
-import os
-import requests
+import config, hashlib, os, requests, uuid
 
 from flask import Flask, session, render_template, request, redirect, url_for, jsonify
 from flask_session import Session
+from helpers import login_required
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -36,7 +33,7 @@ def index():
     if request.method == "GET":
         # Check if a user session exists
         if session.get("user_username") is not None:
-            return redirect("/search")
+            return redirect(url_for('search'))
         else:
             return render_template("login.html")
 
@@ -63,7 +60,7 @@ def index():
                 hashed_password = hashlib.sha256((password + user.salt).encode('utf-8')).hexdigest()
                 if hashed_password == user.password:
                     session["user_username"] = user.username
-                    return redirect("/search")
+                    return redirect(url_for('search'))
 
             invalid_feedback = "Username and password doesn't match."
             return render_template("login.html", invalid_feedback = invalid_feedback)
@@ -85,7 +82,7 @@ def index():
                 # Set user session
                 session["user_username"] = username
 
-                return redirect("/search")
+                return redirect(url_for('search'))
 
             # User already exists
             else:
@@ -95,129 +92,117 @@ def index():
 
 # Search for a book
 @app.route("/search")
+@login_required
 def search():
-
-    # User session exists
-    if session.get("user_username") is not None:
         
-        query = request.args.get("query")
-        
-        # Set checked category
-        category = request.args.get("category")
-        if category is None:
-            category = "title"
-        
-        # Return nothing if query empty
-        if query is None or query == "":
-            return render_template("search.html", category = category)
+    query = request.args.get("query")
+    
+    # Set checked category
+    category = request.args.get("category")
+    if category is None:
+        category = "title"
+    
+    # Return nothing if query empty
+    if query is None or query == "":
+        return render_template("search.html", category = category)
 
-        # Query table
-        if request.args.get("category") == "title":
-            books = db.execute("""
-                SELECT * FROM books WHERE title ILIKE '%' || :title || '%'""", 
-                {"title": query})
-        elif request.args.get("category") == "author":
-            books = db.execute("""
-                SELECT * FROM books WHERE author ILIKE '%' || :author || '%'""", 
-                {"author": query})
-        elif request.args.get("category") == "isbn":
-            books = db.execute("""
-                SELECT * FROM books WHERE isbn ILIKE '%' || :isbn || '%'""", 
-                {"isbn": query})
+    # Query table
+    if request.args.get("category") == "title":
+        books = db.execute("""
+            SELECT * FROM books WHERE title ILIKE '%' || :title || '%'""", 
+            {"title": query})
+    elif request.args.get("category") == "author":
+        books = db.execute("""
+            SELECT * FROM books WHERE author ILIKE '%' || :author || '%'""", 
+            {"author": query})
+    elif request.args.get("category") == "isbn":
+        books = db.execute("""
+            SELECT * FROM books WHERE isbn ILIKE '%' || :isbn || '%'""", 
+            {"isbn": query})
 
-        # If results found, set flag
-        results = False
-        if books.rowcount != 0:
-            results = True
+    # If results found, set flag
+    results = False
+    if books.rowcount != 0:
+        results = True
 
-        return render_template("search.html", query = query, results = results, books = books, category = category)
-
-    # Redirect if no user session exists
-    else:
-        return redirect("/")
+    return render_template("search.html", query = query, results = results, books = books, category = category)
 
 
 # View details of a book   
 @app.route("/book/<string:isbn>", methods=["GET", "POST"])
+@login_required
 def book(isbn):
 
-    # If user is logged in
-    if session.get("user_username") is not None:
-
-        # Get JSON from Goodreads
-        res = requests.get("""
-            https://www.goodreads.com/book/review_counts.json""", 
-            params={"key": api_key, "isbns": isbn})
-        
-        # Check status code
-        if res.status_code != 200:
-            review_count = "Not found"
-            average_rating = "Not found"
-        else:
-            # Parse JSON and retrieve values
-            res = res.json()
-            review_count = res["books"][0]["work_ratings_count"]
-            average_rating = res["books"][0]["average_rating"]
-
-        # Retrieve book info from ISBN
-        book = db.execute("""
-            SELECT * FROM books WHERE isbn = :isbn""",
-            {"isbn": isbn}).fetchone()
-
-        # Flags
-        reviewed = False
-        invalid_feedback = False
-
-        # If leaving a review
-        if request.method == "POST":
-
-            review = request.form.get("review")
-            rating = request.form.get("rating")
-
-            # Check if fields empty
-            if review == "" or rating is None:
-                invalid_feedback = "All fields required."
-                pass
-
-            # Check if user has reviewed this book
-            elif db.execute("""
-                SELECT * FROM reviews WHERE book_isbn = :book_isbn AND user_username = :user_username""",
-                {"book_isbn": isbn, "user_username": session["user_username"]}).rowcount > 0:
-                reviewed = "You've already reviewed this book."
-
-            # Store review in table
-            else:
-                db.execute("""
-                    INSERT INTO reviews (book_isbn, user_username, review, rating) 
-                    VALUES (:book_isbn, :user_username, :review, :rating)""", {
-                    "book_isbn": book.isbn, 
-                    "user_username": session["user_username"], 
-                    "review": review, 
-                    "rating": rating})
-                db.commit()
-
-        # Query for updated reviews
-        reviews = db.execute("""
-            SELECT * FROM reviews WHERE book_isbn = :book_isbn ORDER BY id DESC""",
-            {"book_isbn": book.isbn})
-
-        # If results found, set flag
-        results = False
-        if reviews.rowcount != 0:
-            results = True
-
-        return render_template("book.html", 
-            book = book, 
-            reviews = reviews, 
-            review_count = review_count, 
-            average_rating = average_rating,
-            results = results,
-            reviewed = reviewed,
-            invalid_feedback = invalid_feedback)
-
-    # Redirect if user not logged in
+    # Get JSON from Goodreads
+    res = requests.get("""
+        https://www.goodreads.com/book/review_counts.json""", 
+        params={"key": api_key, "isbns": isbn})
+    
+    # Check status code
+    if res.status_code != 200:
+        review_count = "Not found"
+        average_rating = "Not found"
     else:
-        return redirect("/")
+        # Parse JSON and retrieve values
+        res = res.json()
+        review_count = res["books"][0]["work_ratings_count"]
+        average_rating = res["books"][0]["average_rating"]
+
+    # Retrieve book info from ISBN
+    book = db.execute("""
+        SELECT * FROM books WHERE isbn = :isbn""",
+        {"isbn": isbn}).fetchone()
+
+    # Flags
+    reviewed = False
+    invalid_feedback = False
+
+    # If leaving a review
+    if request.method == "POST":
+
+        review = request.form.get("review")
+        rating = request.form.get("rating")
+
+        # Check if fields empty
+        if review == "" or rating is None:
+            invalid_feedback = "All fields required."
+            pass
+
+        # Check if user has reviewed this book
+        elif db.execute("""
+            SELECT * FROM reviews WHERE book_isbn = :book_isbn AND user_username = :user_username""",
+            {"book_isbn": isbn, "user_username": session["user_username"]}).rowcount > 0:
+            reviewed = "You've already reviewed this book."
+
+        # Store review in table
+        else:
+            db.execute("""
+                INSERT INTO reviews (book_isbn, user_username, review, rating) 
+                VALUES (:book_isbn, :user_username, :review, :rating)""", {
+                "book_isbn": book.isbn, 
+                "user_username": session["user_username"], 
+                "review": review, 
+                "rating": rating})
+            db.commit()
+
+    # Query for updated reviews
+    reviews = db.execute("""
+        SELECT * FROM reviews WHERE book_isbn = :book_isbn ORDER BY id DESC""",
+        {"book_isbn": book.isbn})
+
+    # If results found, set flag
+    results = False
+    if reviews.rowcount != 0:
+        results = True
+
+    return render_template("book.html", 
+        book = book, 
+        reviews = reviews, 
+        review_count = review_count, 
+        average_rating = average_rating,
+        results = results,
+        reviewed = reviewed,
+        invalid_feedback = invalid_feedback)
 
 
 # API for book with reviews & ratings
@@ -258,10 +243,11 @@ def api(isbn):
         "year": book.year
     })
 
+
 # Logout user
 @app.route("/logout")
 def logout():
     
     # Clear user's session and redirect
     session.clear()
-    return redirect("/")
+    return redirect(url_for('index'))

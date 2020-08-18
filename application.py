@@ -6,7 +6,7 @@ from helpers import login_required
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
-app = Flask(__name__, static_url_path = '/static', static_folder = "static")
+app = Flask(__name__)
 api_key = config.api_key
 
 # Check for environment variable

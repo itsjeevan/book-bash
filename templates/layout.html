@@ -3,27 +3,23 @@
 <html lang="en">
     
     <head>
-        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"> -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='/css/main.css') }}">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Book Bash</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;900&display=swap" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
 
     <body>
-        <div class="container">
-            <div class="row justify-content-center mb-4">
 
-                <div class="col-auto">
-            
-                    <img src="{{ url_for('static', filename='/images/logo.png') }}" alt="Open book logo." width="200" height="200">
-                    <h1 class="text-center">Book Bash</h1>
-                    
-                </div>
-                
-            </div>
-            {% block body %}
-            {% endblock %}
+        <div class="header">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" class="header__logo" alt="Open book logo.">
+            <h1>Book Bash</h1>
         </div>
+        
+        {% block body %}
+        {% endblock %}
+        
     </body>
 
 </html>

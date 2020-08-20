@@ -251,3 +251,6 @@ def logout():
     # Clear user's session and redirect
     session.clear()
     return redirect(url_for('index'))
+
+if __name__=="__main__":
+    app.run(debug=True)

@@ -11,16 +11,51 @@ body {
 /* Layout */
 
 .header {
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
     margin: 0 auto;
 }
 
 .header__logo {
-    width: 200px;
     height: 200px;
+    width: 200px;
 }
 
 /* Login */
 
+.login {
+    align-items: center;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 400px;
+    padding: 3rem;
+}
+
+.login__title {
+    margin-top: 0;
+}
+
+.login__message {
+    text-align: center;
+}
+
+/** Login Form **/
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.login-form-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.login-form-buttons__button {
+    width: 48%;
+}

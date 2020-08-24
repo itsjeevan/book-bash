@@ -1,6 +1,7 @@
 /* Global */
 
 body {
+    background-color: #F8EFF0;
     font-family: 'Roboto Slab', serif;
     font-weight: normal;
     margin: 0 auto;
@@ -17,29 +18,38 @@ body {
     margin: 0 auto;
 }
 
-.header__logo {
-    height: 200px;
-    width: 200px;
+.app-logo {
+    height: 300px;
+    width: 300px;
+}
+
+.app-title {
+    margin-bottom: 4rem;
 }
 
 /* Login */
 
 .login {
     align-items: center;
-    border: 1px solid black;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0px 0px 50px 0px #a8a8a8;
     display: flex;
     flex-direction: column;
     margin: 0 auto;
-    width: 400px;
+    width: 350px;
     padding: 3rem;
 }
 
 .login__title {
+    font-size: 3rem;
     margin-top: 0;
+    margin-bottom: 2rem;
 }
 
 .login__message {
     text-align: center;
+    margin-bottom: 2.5rem;
 }
 
 /** Login Form **/
@@ -50,12 +60,61 @@ body {
     width: 100%;
 }
 
-.login-form-buttons {
+
+.login-form-input {
+    border: 1px solid #cccccc;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+}
+
+.login-form-input:focus {
+    outline-color: #ae96e0;
+}
+
+.login-form-input--is-invalid {
+    border: 1px solid #eb3636;
+}
+
+.login-form-invalid-feedback {
+    color: #e66a6a;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin: 0 0 2rem 0;
+    text-align: center;
+}
+
+.login-buttons {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.login-form-buttons__button {
+.login-button {
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-weight: bold;
+    padding: 1rem 0;
     width: 48%;
+}
+
+.login-button:focus {
+    outline: none;
+}
+
+.login-button--green {
+    background-color: #A5E190;
+}
+
+.login-button--green:hover {
+    background-color: #84c76b;
+}
+
+.login-button--blue {
+    background-color: #93C5DB;
+}
+
+.login-button--blue:hover {
+    background-color: #6ea9c2;
 }

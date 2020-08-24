@@ -4,16 +4,16 @@
 
     <div class="login">
 
-        <h2 class="login__title">Welcome!</h2>
+        <h2 class="login__title">Login</h2>
         <p class="login__message">Search for books, rate and review with help from Goodreads, and more!</p>
         
-        <form action="{{ url_for('index') }}" method="post" class="login-form">
-            <input type="text" class="form-control{% if invalid_feedback %} is-invalid{% endif %}" name="username" placeholder="Username">
-            <input type="password" class="form-control{% if invalid_feedback %} is-invalid{% endif %}" name="password" placeholder="Password">
-            {% if invalid_feedback %}<div class="invalid-feedback">{{ invalid_feedback }}</div>{% endif %}
-            <div class="login-form-buttons">
-                <button type="submit" class="login-form-buttons__button" name="button" value="login" >Login</button>
-                <button type="submit" class="login-form-buttons__button" name="button" value="register">Register</button>
+        <form class="login-form" action="{{ url_for('index') }}" method="post">
+            <input type="text" class="login-form-input{% if invalid_feedback %} login-form-input--is-invalid{% endif %}" name="username" placeholder="Username">
+            <input type="password" class="login-form-input{% if invalid_feedback %} login-form-input--is-invalid{% endif %}" name="password" placeholder="Password">
+            {% if invalid_feedback %}<p class="login-form-invalid-feedback">{{ invalid_feedback }}</p>{% endif %}
+            <div class="login-buttons">
+                <button type="submit" class="login-button login-button--green" name="button" value="login" >Login</button>
+                <button type="submit" class="login-button login-button--blue" name="button" value="register">Register</button>
             </div>
         </form>
 

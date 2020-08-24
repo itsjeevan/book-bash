@@ -62,7 +62,7 @@ def index():
                     session["user_username"] = user.username
                     return redirect(url_for('search'))
 
-            invalid_feedback = "Username and password doesn't match."
+            invalid_feedback = "Username & Password do not match."
             return render_template("login.html", invalid_feedback = invalid_feedback)
 
         # If Register button pressed

@@ -116,12 +116,10 @@ body {
     width: 48%;
 }
 
-.nav__link--search {
-    color: white;
-    background-color: #84c76b;
-}
+.nav__link--search {color: white; background-color: #A5E190;}
+.nav__link--search:hover {background-color: #84c76b;}
+.nav__link--search:focus {background-color: #84e063;}
 
-.nav__link--logout:hover {
-    color: white;
-    background-color: #e66a6a;
-}
+.nav__link--logout:visited {color: black;}
+.nav__link--logout:hover {color: white; background-color: #e66a6a;}
+.nav__link--logout:focus {background-color: #cc4949;}

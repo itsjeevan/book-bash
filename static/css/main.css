@@ -1,22 +1,18 @@
 /* Global */
 
 body {
+    align-items: center;
     background-color: #F8EFF0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     font-family: 'Roboto Slab', serif;
     font-weight: normal;
     margin: 0 auto;
-    padding: 0 3rem;
     width: 1100px;
 }
 
 /* Layout */
-
-.header {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-}
 
 .app-logo {
     height: 300px;
@@ -25,18 +21,15 @@ body {
 
 .app-title {
     margin-bottom: 4rem;
+    text-align: center;
 }
 
 /* Login */
 
 .login {
-    align-items: center;
     background-color: white;
     border-radius: 1rem;
     box-shadow: 0px 0px 50px 0px #a8a8a8;
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
     width: 350px;
     padding: 3rem;
 }
@@ -45,27 +38,23 @@ body {
     font-size: 3rem;
     margin-top: 0;
     margin-bottom: 2rem;
+    text-align: center;
 }
 
 .login__message {
-    text-align: center;
     margin-bottom: 2.5rem;
+    text-align: center;
 }
 
 /** Login Form **/
 
-.login-form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-
-
 .login-form-input {
     border: 1px solid #cccccc;
     border-radius: 0.5rem;
+    box-sizing: border-box;
     margin-bottom: 2rem;
     padding: 1rem;
+    width: 100%;
 }
 
 .login-form-input:focus {
@@ -86,11 +75,10 @@ body {
 
 .login-buttons {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
 }
 
-.login-button {
+.login-buttons__button {
     border: none;
     border-radius: 0.5rem;
     color: white;
@@ -99,22 +87,41 @@ body {
     width: 48%;
 }
 
-.login-button:focus {
-    outline: none;
+.login-buttons__button:focus {outline: none;}
+.login-buttons__button--green {background-color: #A5E190;}
+.login-buttons__button--green:hover {background-color: #84c76b;}
+.login-buttons__button:focus {background-color: #84e063;}
+.login-buttons__button--blue {background-color: #93C5DB;}
+.login-buttons__button--blue:hover {background-color: #6ea9c2;}
+.login-buttons__button--blue:focus {background-color: #67b8db;}
+
+/* Navigation */
+
+.nav {
+    display: flex;
+    background-color: white;
+    border-radius: 2rem;
+    box-shadow: 0px 0px 50px 0px #a8a8a8;
+    justify-content: space-between;
+    width: 350px;
+    padding: 1rem;
 }
 
-.login-button--green {
-    background-color: #A5E190;
+.nav__link {
+    border-radius: 1rem;
+    font-weight: bold;
+    padding: 1rem 0;
+    text-align: center;
+    text-decoration: none;
+    width: 48%;
 }
 
-.login-button--green:hover {
+.nav__link--search {
+    color: white;
     background-color: #84c76b;
 }
 
-.login-button--blue {
-    background-color: #93C5DB;
-}
-
-.login-button--blue:hover {
-    background-color: #6ea9c2;
+.nav__link--logout:hover {
+    color: white;
+    background-color: #e66a6a;
 }

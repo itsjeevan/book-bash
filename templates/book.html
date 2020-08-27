@@ -3,82 +3,80 @@
 
 {% block body %}
 
-<nav class="nav justify-content-center">
-    <a class="nav-link" href="{{ url_for('search') }}">Search</a>
-    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+<nav class="nav">
+    <a class="nav__link nav__link--search" href="{{ url_for('search') }}">Search</a>
+    <a class="nav__link nav__link--logout" href="{{ url_for('logout') }}">Logout</a>
 </nav>
 
-<div class="row justify-content-center mb-5 mt-4">
-    <div class="col-md-9">
-        <h2 class="display-4">{{ book.title }}</h2>
+<div class="main-container">
+
+    <h2 class="book-title">{{ book.title }}</h2>
+
+    <div class="book-container">
+
+        <div class="book-details">
+
+            <h3 class="book-section">Book Info</h3>
+            <div class="book-box book-info">
+                <h4 class="book-category">ISBN</h4>
+                <p class="book-category-info">{{ book.isbn }}</p>
+                <h4 class="book-category">Author</h4>
+                <p class="book-category-info">{{ book.author }}</p>
+                <h4 class="book-category">Year</h4>
+                <p class="book-category-info">{{ book.year }}</p>
+            </div>
+            
+            <h3 class="book-section">Goodreads</h3>
+            <div class="book-box goodreads">
+                <h4 class="book-category">Rating</h4>
+                <p class="book-category-info">{{ average_rating }} / 5 ({{ review_count }})</p>
+            </div>
+            
+        </div>
+
+        <div class="review">
+            
+            <h3 class="book-section">Reviews</h3>
+            <div class="book-box reviews">
+
+                <form class="review-form" action="{{ url_for('book', isbn=book.isbn) }}" method="post">
+                    <select class="review-form-select{% if invalid_feedback %} is-invalid{% endif %}" name="rating">
+                        <option selected disabled>Select a rating...</option>
+                        <option class="option"  value="1">★☆☆☆☆</option>
+                        <option class="option"  value="2">★★☆☆☆</option>
+                        <option class="option"  value="3">★★★☆☆</option>
+                        <option class="option"  value="4">★★★★☆</option>
+                        <option class="option"  value="5">★★★★★</option>
+                    </select>
+                    <textarea class="review-form-text{% if invalid_feedback %} is-invalid{% endif %}"  name="review" placeholder="Your Review"></textarea>
+                    <button class="review-form-button" type="submit">Post</button>
+                </form>
+                
+                {% if reviewed %}
+                <p>{{ reviewed }}</p>
+                {% elif invalid_feedback %}
+                <p>{{ invalid_feedback }}</p>
+                {% endif %}
+                
+                {% if results %}
+                <ul class="reviews-list">
+                    {% for review in reviews %}
+                    <li class="reviews-list-item">
+                        <p class="stars">{% for i in range(review.rating) %}★{% endfor %}{% for i in range(5 - review.rating) %}☆{% endfor %}</p>
+                        <p class="reviews-list-review">{{ review.review }}</p>
+                        <p class="username">{{ review.user_username }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No reviews found</p>
+                {% endif %}
+            </div>
+            
+        </div>
+
     </div>
+        
 </div>
-
-<div class="row justify-content-center">
-
-    <div class="col-lg-3 col-md-4 mb-5">
-        
-        <h3 class="mb-4">Book Info</h3>
-        <p>Author: {{ book.author }}</p>
-        <p>Publication Year: {{ book.year }}</p>
-        <p>ISBN: {{ book.isbn }}</p>
-
-        <h3 class="mt-5 mb-4">Goodreads</h3>
-        <p>Review Count: {{ review_count }}</p>
-        <p>Average Rating: {{ average_rating }}</p>
-
-    </div>
-
-    <div class="col-lg-6 col-md-5">
-
-
-        <h3 class="mb-4">Write a review</h3>
-        
-        <form action="{{ url_for('book', isbn=book.isbn) }}" method="post">
-            <div class="form-group form-row">
-                <select class="form-control{% if invalid_feedback %} is-invalid{% endif %}" name="rating">
-                    <option selected disabled>Rating</option>
-                    <option value="1">★☆☆☆☆</option>
-                    <option value="2">★★☆☆☆</option>
-                    <option value="3">★★★☆☆</option>
-                    <option value="4">★★★★☆</option>
-                    <option value="5">★★★★★</option>
-                </select>
-            </div>
-            <div class="form-group form-row">
-                <textarea name="review" class="form-control{% if invalid_feedback %} is-invalid{% endif %}" placeholder="Your Review" rows="5"></textarea>
-            </div>
-            <div class="form-group form-row justify-content-end">
-                <button type="submit" class="btn btn-primary">Post</button>
-            </div>
-        </form>
-
-        {% if reviewed %}
-        <p class="text-center text-success">{{ reviewed }}</p>
-        {% elif invalid_feedback %}
-        <p class="text-center text-danger">{{ invalid_feedback }}</p>
-        {% endif %}
-        
-        <h3 class="mt-5 mb-4">Reviews</h3>
-        
-        {% if results %}
-        <ul class="list-group list-group-flush">
-            {% for review in reviews %}
-            <li class="list-group-item pl-0 py-4">
-                <p class="mb-2">{% for i in range(review.rating) %}★{% endfor %}{% for i in range(5 - review.rating) %}☆{% endfor %}</p>
-                <p class="mb-2">{{ review.review }}</p>
-                <small class="text-muted">{{ review.user_username }}</small>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p>No reviews found</p>
-        {% endif %}
-
-
-    </div>
-    
-</div>
-
 
 {% endblock %}

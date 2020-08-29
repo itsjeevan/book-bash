@@ -3,39 +3,39 @@
 {% block body %}
 
 <nav class="nav">
-    <a class="nav__link nav__link--search" href="{{ url_for('search') }}">Search</a>
-    <a class="nav__link nav__link--logout" href="{{ url_for('logout') }}">Logout</a>
+    <a class="nav__link nav__link--green nav__link--green-active" href="{{ url_for('search') }}">Search</a>
+    <a class="nav__link nav__link--red" href="{{ url_for('logout') }}">Logout</a>
 </nav>
 
 <div class="main-container">
 
     
-    <form class="search-form" action="{{ url_for('search') }}" method="get">
+    <form class="search" action="{{ url_for('search') }}" method="get">
 
-        <div class="search-text">
-            <input class="search-text__input" name="query" type="search" placeholder="Search for books by..." {% if query %}value="{{ query }}" {% endif %}>
-            <button class="search-text__button" type="submit">
-                <svg height="28px" width="28px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.69 15.48" x="0px" y="0px">
+        <div class="search__text">
+            <input class="search__input" name="query" type="search" placeholder="Search for books by..." {% if query %}value="{{ query }}" {% endif %}>
+            <button class="search__button" type="submit">
+                <svg class="search__svg" height="28px" width="28px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.69 15.48" x="0px" y="0px">
                     <path d="M15.28,12.71,11.85,9.27a6.21,6.21,0,0,0,.75-3,6.3,6.3,0,1,0-6.3,6.3,6.23,6.23,0,0,0,3.23-.9l3.39,3.39a1.39,1.39,0,0,0,2,0l.4-.4A1.4,1.4,0,0,0,15.28,12.71Zm-9-2.25a4.16,4.16,0,1,1,4.16-4.17A4.16,4.16,0,0,1,6.3,10.46Z"/>
                 </svg>
             </button>
         </div>
         
-        <div class="search-categories">
+        <div class="search__categories">
 
-            <div class="search-category">
-                <input class="search-category__radio" type="radio" name="category" id="title" value="title"{% if category == "title" %} checked{% endif %}>
-                <label class="purple" for="title">Title</label>
+            <div class="search__category">
+                <input class="search__radio" type="radio" name="category" id="title" value="title"{% if category == "title" %} checked{% endif %}>
+                <label class="search__label-purple" for="title">Title</label>
             </div>
 
-            <div class="search-category">
-                <input  class="search-category__radio" type="radio" name="category" id="author" value="author"{% if category == "author" %} checked{% endif %}>
-                <label class="teal" for="author">Author</label>
+            <div class="search__category">
+                <input  class="search__radio" type="radio" name="category" id="author" value="author"{% if category == "author" %} checked{% endif %}>
+                <label class="search__label-teal" for="author">Author</label>
             </div>
 
-            <div class="search-category">
-                <input class="search-category__radio"  type="radio" name="category" id="isbn" value="isbn"{% if category == "isbn" %} checked{% endif %}>
-                <label class="blue" for="isbn">ISBN</label>
+            <div class="search__category">
+                <input class="search__radio"  type="radio" name="category" id="isbn" value="isbn"{% if category == "isbn" %} checked{% endif %}>
+                <label class="search__label-blue" for="isbn">ISBN</label>
             </div>
 
         </div>
@@ -44,8 +44,8 @@
     
 {% if query %}
     {% if results %}
-    <table>
-        <thead>
+    <table class="table">
+        <thead class="table__header">
             <tr>
                 <th>ISBN</th>
                 <th>Title</th>
@@ -55,8 +55,8 @@
         </thead>
         <tbody>
             {% for book in books %}
-            <tr class="body-row">
-                <td><a class="isbn" href="{{ url_for('book', isbn=book.isbn) }}">{{ book.isbn }}</a></td>
+            <tr class="table__body-row">
+                <td><a class="table__isbn" href="{{ url_for('book', isbn=book.isbn) }}">{{ book.isbn }}</a></td>
                 <td>{{ book.title }}</td>
                 <td>{{ book.author }}</td>
                 <td>{{ book.year }}</td>
@@ -65,7 +65,7 @@
         </tbody>
     </table>
     {% else %}
-    <p>No results found</p>
+    <p class="no-results">No results found</p>
     {% endif %}
 {% endif %}
 

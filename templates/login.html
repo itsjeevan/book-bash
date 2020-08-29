@@ -7,16 +7,16 @@
         <h2 class="login__title">Login</h2>
         <p class="login__message">Search for books, rate and review with help from Goodreads, and more!</p>
         
-        <form class="login-form" action="{{ url_for('index') }}" method="post">
+        <form class="login__form" action="{{ url_for('index') }}" method="post">
             
-            <input type="text" class="login-form-input{% if invalid_feedback %} login-form-input--is-invalid{% endif %}" name="username" placeholder="Username">
-            <input type="password" class="login-form-input{% if invalid_feedback %} login-form-input--is-invalid{% endif %}" name="password" placeholder="Password">
+            <input class="login__input{% if invalid_feedback %} login-form__input--is-invalid{% endif %}" type="text" name="username" placeholder="Username">
+            <input class="login__input{% if invalid_feedback %} login-form__input--is-invalid{% endif %}" type="password" name="password" placeholder="Password">
             
-            {% if invalid_feedback %}<p class="login-form-invalid-feedback">{{ invalid_feedback }}</p>{% endif %}
+            {% if invalid_feedback %}<p class="login__invalid-feedback">{{ invalid_feedback }}</p>{% endif %}
             
-            <div class="login-buttons">
-                <button type="submit" class="login-buttons__button login-buttons__button--green" name="button" value="login" >Login</button>
-                <button type="submit" class="login-buttons__button login-buttons__button--blue" name="button" value="register">Register</button>
+            <div class="login__buttons">
+                <button type="submit" class="button button--green" name="button" value="login" >Login</button>
+                <button type="submit" class="button button--blue" name="button" value="register">Register</button>
             </div>
 
         </form>

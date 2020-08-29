@@ -17,29 +17,59 @@ button, input {
     font-size: inherit;
 }
 
-button {
+.button {
+    border: none;
+    border-radius: 1rem;
+    color: white;
     cursor: pointer;
+    font-weight: bold;
+    outline: none;
+    padding: 1rem 0;
+    width: 150px;
 }
+
+.button--green {background-color: #A5E190;}
+.button--green:hover {background-color: #84c76b;}
+.button--green:focus {background-color: #84e063;}
+.button--blue {background-color: #93C5DB;}
+.button--blue:hover {background-color: #6ea9c2;}
+.button--blue:focus {background-color: #67b8db;}
 
 input::placeholder {
     color: #808080;
 }
 
-
 input[type="search"]::-webkit-search-cancel-button {
     -webkit-appearance:none;
 }
 
+.main-container {
+    align-items: center;
+    background-color: white;
+    border-radius: 2rem;
+    box-shadow: 0px 0px 50px 0px #a8a8a8;
+    display: flex;
+    flex-direction: column;
+    padding: 4rem 2rem;
+    margin-top: 4rem;
+    width: 100%;
+}
+
 /* Layout */
 
-.app-logo {
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header__logo {
     height: 300px;
     width: 300px;
 }
 
-.app-title {
+.header__title {
     margin-bottom: 4rem;
-    text-align: center;
 }
 
 /* Login */
@@ -64,9 +94,7 @@ input[type="search"]::-webkit-search-cancel-button {
     text-align: center;
 }
 
-/** Login Form **/
-
-.login-form-input {
+.login__input {
     border: 1px solid #cccccc;
     border-radius: 0.5rem;
     margin-bottom: 2rem;
@@ -74,15 +102,15 @@ input[type="search"]::-webkit-search-cancel-button {
     width: 100%;
 }
 
-.login-form-input:focus {
+.login__input:focus {
     outline-color: #ae96e0;
 }
 
-.login-form-input--is-invalid {
+.login__input--is-invalid {
     border: 1px solid #eb3636;
 }
 
-.login-form-invalid-feedback {
+.login__invalid-feedback {
     color: #e66a6a;
     font-size: 0.9rem;
     font-weight: bold;
@@ -90,34 +118,27 @@ input[type="search"]::-webkit-search-cancel-button {
     text-align: center;
 }
 
-.login-buttons {
+.login__buttons {
     display: flex;
     justify-content: space-between;
 }
 
-.login-buttons__button {
+.login__button {
     border: none;
     border-radius: 0.5rem;
     color: white;
     font-weight: bold;
     outline: none;
     padding: 1rem 0;
-    width: 48%;
+    width: 150px;
 }
-
-.login-buttons__button--green {background-color: #A5E190;}
-.login-buttons__button--green:hover {background-color: #84c76b;}
-.login-buttons__button:focus {background-color: #84e063;}
-.login-buttons__button--blue {background-color: #93C5DB;}
-.login-buttons__button--blue:hover {background-color: #6ea9c2;}
-.login-buttons__button--blue:focus {background-color: #67b8db;}
 
 /* Navigation */
 
 .nav {
     display: flex;
     background-color: white;
-    border-radius: 2rem;
+    border-radius: 1.5rem;
     box-shadow: 0px 0px 50px 0px #a8a8a8;
     justify-content: space-between;
     width: 350px;
@@ -130,39 +151,52 @@ input[type="search"]::-webkit-search-cancel-button {
     padding: 1rem 0;
     text-align: center;
     text-decoration: none;
-    width: 48%;
+    width: 150px;
 }
 
-.nav__link--search {color: white; background-color: #A5E190;}
-.nav__link--search:hover {background-color: #84c76b;}
-.nav__link--search:focus {background-color: #84e063;}
+.nav__link--green {
+    background-color: white;
+    box-shadow: 0px 0px 10px 0px #a8a8a8;
+    color: black;
+}
+.nav__link--green:hover {
+    background-color: #84c76b;
+    box-shadow: none;
+    color: white;
+}
+.nav__link--green:focus {background-color: #84e063;}
+.nav__link--green-active {
+    background-color: #a5e090;
+    box-shadow: none;
+    color: white;
+}
 
-.nav__link--logout:visited {color: black;}
-.nav__link--logout:hover {color: white; background-color: #e66a6a;}
-.nav__link--logout:focus {background-color: #cc4949;}
+.nav__link--red {
+    background-color: white;
+    box-shadow: 0px 0px 10px 0px #a8a8a8;
+    color: black;
+}
+.nav__link--red:hover {
+    background-color: #e66a6a;
+    box-shadow: none;
+    color: white;
+}
+.nav__link--red:focus {background-color: #cc4949;}
+.nav__link--red-active {
+    background-color: #ff8f8f;
+    box-shadow: none;
+    color: white;
+}
 
 /* Search */
 
-.main-container {
-    background-color: white;
-    border-radius: 2rem;
-    box-shadow: 0px 0px 50px 0px #a8a8a8;
-    padding: 4rem 2rem;
-    margin-top: 3rem;
-    width: 100%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.search-text {
+.search__text {
     display: flex;
     border-bottom: 1px solid #EEEEEE;
     margin-bottom: 2rem;
 }
 
-.search-text__input {
+.search__input {
     border: none;
     font-size: 1.25rem;
     outline: none;
@@ -171,37 +205,37 @@ input[type="search"]::-webkit-search-cancel-button {
     width: 400px;
 }
 
-.search-text__button {
+.search__button {
     background: none;
     border: none;
-    fill: #404040;
     outline: none;
 }
 
-.search-text__button:hover {
+.search__svg:hover {
+    cursor: pointer;
     fill: #1D9CE3;
 }
 
-.search-categories {
+.search__categories {
     display: flex;
     justify-content: center;
 }
 
-.search-category {
+.search__category {
     margin: 0 1rem;
 }
 
-.search-category__radio {
+.search__radio {
     margin-right: 0.5rem;
 }
 
-.purple {color: #bf00ff;}
-.teal {color: #52c7c1;}
-.blue {color: #3898F1;}
+.search__label-purple {color: #bf00ff;}
+.search__label-teal {color: #52c7c1;}
+.search__label-blue {color: #3898F1;}
 
 /* Table */
 
-table {
+.table {
     border-collapse: separate;
     border-spacing: 2rem 3rem;
     font-size: 1.2rem;
@@ -209,16 +243,22 @@ table {
     width: 100%;
 }
 
-th {
+.table__header {
     text-align: left;
 }
 
-.body-row {
+.table__body-row {
     font-weight: 300;
 }
 
-.isbn {color: inherit;}
-.isbn:hover{color: #3898F1;}
+.table__isbn {color: inherit;}
+.table__isbn:hover{color: #3898F1;}
+
+.no-results {
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin-top: 4rem;
+}
 
 /* Book */
 
@@ -314,15 +354,9 @@ th {
 
 .review-form-button {
     background-color: #B2DAF0;
-    border: none;
-    border-radius: 0.5rem;
-    color: white;
+    /* @Fix */
     font-size: 1rem;
-    font-weight: bold;
     margin-left: auto;
-    outline: none;
-    padding: 0.5rem 0;
-    width: 150px;
 }
 
 /* Reviews */

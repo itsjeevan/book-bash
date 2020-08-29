@@ -4,8 +4,8 @@
 {% block body %}
 
 <nav class="nav">
-    <a class="nav__link nav__link--search" href="{{ url_for('search') }}">Search</a>
-    <a class="nav__link nav__link--logout" href="{{ url_for('logout') }}">Logout</a>
+    <a class="nav__link nav__link--green" href="{{ url_for('search') }}">Search</a>
+    <a class="nav__link nav__link--red" href="{{ url_for('logout') }}">Logout</a>
 </nav>
 
 <div class="main-container">
@@ -49,7 +49,7 @@
                         <option class="option"  value="5">★★★★★</option>
                     </select>
                     <textarea class="review-form-text{% if invalid_feedback %} is-invalid{% endif %}"  name="review" placeholder="Your Review"></textarea>
-                    <button class="review-form-button" type="submit">Post</button>
+                    <button class="button button--blue review-form-button" type="submit">Post</button>
                 </form>
                 
                 {% if reviewed %}

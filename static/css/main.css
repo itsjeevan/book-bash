@@ -106,18 +106,6 @@ input[type="search"]::-webkit-search-cancel-button {
     outline-color: #ae96e0;
 }
 
-.login__input--is-invalid {
-    border: 1px solid #eb3636;
-}
-
-.login__invalid-feedback {
-    color: #e66a6a;
-    font-size: 0.9rem;
-    font-weight: bold;
-    margin: 0 0 2rem 0;
-    text-align: center;
-}
-
 .login__buttons {
     display: flex;
     justify-content: space-between;
@@ -269,31 +257,23 @@ input[type="search"]::-webkit-search-cancel-button {
     margin: 0 0 0rem 4rem;
 }
 
-.book-container {
+.book {
     display: flex;
     flex-direction: row;
     width: 100%;
 }
 
-.book-section {
-    font-size: 1.75rem;
-    margin: 4rem 0 2rem 2rem;
-}
-
-.book-details {
+.book__left-panel {
     flex: 2 1 0;
     padding: 0 2rem;
 }
 
-.review {
-    flex: 3 1 0;
-    padding: 0 2rem;
-    /* display: flex;
-    flex-direction: column; */
+.book__section-heading {
+    font-size: 1.75rem;
+    margin: 4rem 0 2rem 2rem;
 }
 
-
-.book-box {
+.book__section {
     border-radius: 2rem;
     box-shadow: 0px 0px 25px 0px #cccccc;
     font-size: 1.2rem;
@@ -301,87 +281,110 @@ input[type="search"]::-webkit-search-cancel-button {
     padding: 2rem;
 }
 
-.book-info {background-color: #FAFFFB;}
-.goodreads {background-color: #F3F7FD;}
-.reviews {
+.book__section--info {background-color: #FAFFFB;}
+.book__section--goodreads {background-color: #F3F7FD;}
+.book__section--reviews {
     background-color: #FFFDFA;
-    /* flex-grow: 1; */
+    flex-grow: 1;
 }
 
-.book-category {
+.book__section-subheading {
     font-weight: bold;
     margin: 0 0 0.75rem 0;
 }
 
-.book-category-info {
+.book__section-content {
     margin: 0 0 1.5rem 0;
 }
 
-.book-category-info:last-child {
+.book__section-content:last-child {
     margin: 0;
+}
+
+.book__right-panel {
+    display: flex;
+    flex: 3 1 0;
+    flex-direction: column;
+    padding: 0 2rem;
 }
 
 /* Review Form */
 
-.review-form {
+.book__review-form {
     display: flex;
     flex-direction: column;
 }
 
-.review-form-select {
+.book__select {
     appearance: none;
     border: 1px solid lightgray;
     border-radius: 0.5rem;
     color: grey;
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 1.2rem;
+    font-weight: 300;
     outline: none;
     padding: 1rem;
     margin-bottom: 2rem;
 }
 
-.review-form-text {
+.book__textarea {
     border: 1px solid lightgray;
     border-radius: 0.5rem;
     font-family: inherit;
-    font-size: 1rem;
-    height: 150px;
+    font-size: 1.2rem;
+    font-weight: 300;
     margin-bottom: 2rem;
     outline: none;
     padding: 1rem;
     resize: none;
 }
 
-.review-form-button {
-    background-color: #B2DAF0;
-    /* @Fix */
+.button--book {
     font-size: 1rem;
     margin-left: auto;
 }
 
 /* Reviews */
 
-.reviews-list {
+.book__reviews {
     list-style-type: none;
     padding-left: 0;
+    margin-top: 4rem;
 }
 
-.reviews-list-item {
+.book__review {
     margin-top: 3rem;
 }
 
-.stars {
-    font-size: 1.25rem;
+.book__review-rating {
+    font-size: 1.2rem;
     margin-bottom: 0;
 }
 
-.reviews-list-review {
-    font-size: 1rem;
+.book__review-text {
+    font-size: 1.2rem;
     margin: 0.5rem 0;
 }
 
-.username {
-    color: lightgray;
+.book__review-username {
+    color: #a8a8a8;
     margin: 0;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
+}
+
+/* Error */
+
+.invalid-feedback {
+    color: #e66a6a;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.invalid-feedback--login {margin: 0 0 2rem 0;}
+.invalid-feedback--book {margin: 2rem 0 0 0;}
+
+.is-invalid {
+    border: 1px solid #eb3636;
 }

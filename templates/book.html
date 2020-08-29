@@ -12,59 +12,59 @@
 
     <h2 class="book-title">{{ book.title }}</h2>
 
-    <div class="book-container">
+    <div class="book">
 
-        <div class="book-details">
+        <div class="book__left-panel">
 
-            <h3 class="book-section">Book Info</h3>
-            <div class="book-box book-info">
-                <h4 class="book-category">ISBN</h4>
-                <p class="book-category-info">{{ book.isbn }}</p>
-                <h4 class="book-category">Author</h4>
-                <p class="book-category-info">{{ book.author }}</p>
-                <h4 class="book-category">Year</h4>
-                <p class="book-category-info">{{ book.year }}</p>
+            <h3 class="book__section-heading">Book Info</h3>
+            <div class="book__section book__section--info">
+                <h4 class="book__section-subheading">ISBN</h4>
+                <p class="book__section-content">{{ book.isbn }}</p>
+                <h4 class="book__section-subheading">Author</h4>
+                <p class="book__section-content">{{ book.author }}</p>
+                <h4 class="book__section-subheading">Year</h4>
+                <p class="book__section-content">{{ book.year }}</p>
             </div>
             
-            <h3 class="book-section">Goodreads</h3>
-            <div class="book-box goodreads">
-                <h4 class="book-category">Rating</h4>
-                <p class="book-category-info">{{ average_rating }} / 5 ({{ review_count }})</p>
+            <h3 class="book__section-heading">Goodreads</h3>
+            <div class="book__section book__section--goodreads">
+                <h4 class="book__section-subheading">Rating</h4>
+                <p class="book__section-content">{{ average_rating }} / 5 ({{ review_count }})</p>
             </div>
             
         </div>
 
-        <div class="review">
+        <div class="book__right-panel">
             
-            <h3 class="book-section">Reviews</h3>
-            <div class="book-box reviews">
+            <h3 class="book__section-heading">Reviews</h3>
+            <div class="book__section book__section--reviews">
 
-                <form class="review-form" action="{{ url_for('book', isbn=book.isbn) }}" method="post">
-                    <select class="review-form-select{% if invalid_feedback %} is-invalid{% endif %}" name="rating">
+                <form class="book__review-form" action="{{ url_for('book', isbn=book.isbn) }}" method="post">
+                    <select class="book__select{% if invalid_feedback %} is-invalid{% endif %}" name="rating">
                         <option selected disabled>Select a rating...</option>
-                        <option class="option"  value="1">★☆☆☆☆</option>
-                        <option class="option"  value="2">★★☆☆☆</option>
-                        <option class="option"  value="3">★★★☆☆</option>
-                        <option class="option"  value="4">★★★★☆</option>
-                        <option class="option"  value="5">★★★★★</option>
+                        <option value="1">★☆☆☆☆</option>
+                        <option value="2">★★☆☆☆</option>
+                        <option value="3">★★★☆☆</option>
+                        <option value="4">★★★★☆</option>
+                        <option value="5">★★★★★</option>
                     </select>
-                    <textarea class="review-form-text{% if invalid_feedback %} is-invalid{% endif %}"  name="review" placeholder="Your Review"></textarea>
-                    <button class="button button--blue review-form-button" type="submit">Post</button>
+                    <textarea class="book__textarea{% if invalid_feedback %} is-invalid{% endif %}" name="review" placeholder="Your Review" rows="5"></textarea>
+                    <button class="button button--blue button--book" type="submit">Post</button>
                 </form>
                 
                 {% if reviewed %}
                 <p>{{ reviewed }}</p>
                 {% elif invalid_feedback %}
-                <p>{{ invalid_feedback }}</p>
+                <p class="invalid-feedback invalid-feedback--book">{{ invalid_feedback }}</p>
                 {% endif %}
                 
                 {% if results %}
-                <ul class="reviews-list">
+                <ul class="book__reviews">
                     {% for review in reviews %}
-                    <li class="reviews-list-item">
-                        <p class="stars">{% for i in range(review.rating) %}★{% endfor %}{% for i in range(5 - review.rating) %}☆{% endfor %}</p>
-                        <p class="reviews-list-review">{{ review.review }}</p>
-                        <p class="username">{{ review.user_username }}</p>
+                    <li class="book__review">
+                        <p class="book__review-rating">{% for i in range(review.rating) %}★{% endfor %}{% for i in range(5 - review.rating) %}☆{% endfor %}</p>
+                        <p class="book__review-text">{{ review.review }}</p>
+                        <p class="book__review-username">{{ review.user_username }}</p>
                     </li>
                     {% endfor %}
                 </ul>

@@ -359,7 +359,7 @@ input[type="search"]::-webkit-search-cancel-button {
 
 .book__review-rating {
     font-size: 1.2rem;
-    margin-bottom: 0;
+    margin: 0;
 }
 
 .book__review-text {
@@ -373,7 +373,7 @@ input[type="search"]::-webkit-search-cancel-button {
     font-size: 0.9rem;
 }
 
-/* Error */
+/* Form validation */
 
 .invalid-feedback {
     color: #e66a6a;
@@ -383,7 +383,7 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 .invalid-feedback--login {margin: 0 0 2rem 0;}
-.invalid-feedback--book {margin: 2rem 0 0 0;}
+.invalid-feedback--book {margin: 0 0 2rem 0;}
 
 .is-invalid {
     border: 1px solid #eb3636;

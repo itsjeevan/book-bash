@@ -49,14 +49,13 @@
                         <option value="5">★★★★★</option>
                     </select>
                     <textarea class="book__textarea{% if invalid_feedback %} is-invalid{% endif %}" name="review" placeholder="Your Review" rows="5"></textarea>
+                    {% if reviewed %}
+                    <p class="invalid-feedback invalid-feedback--book">{{ reviewed }}</p>
+                    {% elif invalid_feedback %}
+                    <p class="invalid-feedback invalid-feedback--book">{{ invalid_feedback }}</p>
+                    {% endif %}
                     <button class="button button--blue button--book" type="submit">Post</button>
                 </form>
-                
-                {% if reviewed %}
-                <p>{{ reviewed }}</p>
-                {% elif invalid_feedback %}
-                <p class="invalid-feedback invalid-feedback--book">{{ invalid_feedback }}</p>
-                {% endif %}
                 
                 {% if results %}
                 <ul class="book__reviews">

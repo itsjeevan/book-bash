@@ -172,7 +172,7 @@ def book(isbn):
         elif db.execute("""
             SELECT * FROM reviews WHERE book_isbn = :book_isbn AND user_username = :user_username""",
             {"book_isbn": isbn, "user_username": session["user_username"]}).rowcount > 0:
-            reviewed = "You've already reviewed this book."
+            reviewed = "You have already reviewed this book."
 
         # Store review in table
         else:

@@ -1,4 +1,4 @@
-import config, hashlib, os, requests, uuid
+import hashlib, os, requests, uuid
 
 from flask import Flask, session, render_template, request, redirect, url_for, jsonify
 from flask_session import Session

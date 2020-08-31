@@ -58,18 +58,19 @@ input[type="search"]::-webkit-search-cancel-button {
 /* Layout */
 
 .header {
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 .header__logo {
     height: 300px;
+    margin: 2rem 0;
     width: 300px;
 }
 
 .header__title {
-    margin-bottom: 4rem;
+    margin: 0 0 4rem 0;
 }
 
 /* Login */

@@ -31,10 +31,12 @@ button, input {
 
 .button--green {background-color: #A5E190;}
 .button--green:hover {background-color: #84c76b;}
-.button--green:focus {background-color: #84e063;}
+.button--green:focus {background-color: #84c76b;}
+.button--green:active {background-color: #84e063;}
 .button--blue {background-color: #93C5DB;}
 .button--blue:hover {background-color: #6ea9c2;}
-.button--blue:focus {background-color: #67b8db;}
+.button--blue:focus {background-color: #6ea9c2;}
+.button--blue:active {background-color: #67b8db;}
 
 input::placeholder {
     color: #808080;
@@ -97,30 +99,21 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 .login__input {
-    border: 1px solid #cccccc;
+    border: 2px solid #e6e6e6;
     border-radius: 0.5rem;
     margin-bottom: 2rem;
+    outline: none;
     padding: 1rem;
     width: 100%;
 }
 
 .login__input:focus {
-    outline-color: #ae96e0;
+    border: 2px solid #ae96e0;
 }
 
 .login__buttons {
     display: flex;
     justify-content: space-between;
-}
-
-.login__button {
-    border: none;
-    border-radius: 0.5rem;
-    color: white;
-    font-weight: bold;
-    outline: none;
-    padding: 1rem 0;
-    width: 150px;
 }
 
 /* Navigation */
@@ -138,6 +131,7 @@ input[type="search"]::-webkit-search-cancel-button {
 .nav__link {
     border-radius: 1rem;
     font-weight: bold;
+    outline: none;
     padding: 1rem 0;
     text-align: center;
     text-decoration: none;
@@ -154,7 +148,12 @@ input[type="search"]::-webkit-search-cancel-button {
     box-shadow: none;
     color: white;
 }
-.nav__link--green:focus {background-color: #84e063;}
+.nav__link--green:focus {
+    background-color: #84c76b;
+    box-shadow: none;;
+    color: white;
+}
+.nav__link--green:active {background-color: #84e063;}
 .nav__link--green-active {
     background-color: #a5e090;
     box-shadow: none;
@@ -171,7 +170,12 @@ input[type="search"]::-webkit-search-cancel-button {
     box-shadow: none;
     color: white;
 }
-.nav__link--red:focus {background-color: #cc4949;}
+.nav__link--red:focus {
+    background-color: #e66a6a;
+    box-shadow: none;
+    color: white;
+}
+.nav__link--red:active {background-color: #cc4949;}
 .nav__link--red-active {
     background-color: #ff8f8f;
     box-shadow: none;
@@ -182,7 +186,7 @@ input[type="search"]::-webkit-search-cancel-button {
 
 .search__text {
     display: flex;
-    border-bottom: 1px solid #EEEEEE;
+    border-bottom: 2px solid #EEEEEE;
     margin-bottom: 2rem;
 }
 
@@ -277,7 +281,7 @@ input[type="search"]::-webkit-search-cancel-button {
 
 .book__section {
     border-radius: 2rem;
-    box-shadow: 0px 0px 25px 0px #cccccc;
+    box-shadow: 0px 0px 25px 0px #d9d9d9;
     font-size: 1.2rem;
     font-weight: 300;
     padding: 2rem;
@@ -321,7 +325,7 @@ input[type="search"]::-webkit-search-cancel-button {
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;
-    border: 1px solid #cccccc;
+    border: 2px solid #e6e6e6;
     border-radius: 0.5rem;
     color: grey;
     font-family: inherit;
@@ -332,8 +336,12 @@ input[type="search"]::-webkit-search-cancel-button {
     margin-bottom: 2rem;
 }
 
+.book__select:focus {
+    border: 2px solid #ae96e0;
+}
+
 .book__textarea {
-    border: 1px solid #cccccc;
+    border: 2px solid #e6e6e6;
     border-radius: 0.5rem;
     font-family: inherit;
     font-size: 1.2rem;
@@ -342,6 +350,10 @@ input[type="search"]::-webkit-search-cancel-button {
     outline: none;
     padding: 1rem;
     resize: none;
+}
+
+.book__textarea:focus {
+    border: 2px solid #ae96e0;
 }
 
 .button--book {
@@ -395,5 +407,5 @@ input[type="search"]::-webkit-search-cancel-button {
 .invalid-feedback--book {margin: 0 0 2rem 0;}
 
 .is-invalid {
-    border: 1px solid #eb3636;
+    border: 2px solid #eb3636;
 }

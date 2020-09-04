@@ -29,7 +29,7 @@
             <h3 class="book__section-heading">Goodreads</h3>
             <div class="book__section book__section--goodreads">
                 <h4 class="book__section-subheading">Rating</h4>
-                <p class="book__section-content">{{ average_rating }} / 5 ({{ review_count }})</p>
+                <p class="book__section-content">{% if review_count or average_rating %}{{ average_rating }} / 5 ({{ review_count }}){% else %}Not found{% endif %}</p>
             </div>
             
         </div>

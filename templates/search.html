@@ -46,20 +46,20 @@
     {% if results %}
     <table class="table">
         <thead class="table__header">
-            <tr>
-                <th>ISBN</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Year</th>
+            <tr class="table__header-row">
+                <th class="table__header-data">ISBN</th>
+                <th class="table__header-data">Title</th>
+                <th class="table__header-data">Author</th>
+                <th class="table__header-data">Year</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table__body">
             {% for book in books %}
             <tr class="table__body-row">
-                <td><a class="table__isbn" href="{{ url_for('book', isbn=book.isbn) }}">{{ book.isbn }}</a></td>
-                <td>{{ book.title }}</td>
-                <td>{{ book.author }}</td>
-                <td>{{ book.year }}</td>
+                <td class="table__body-data"><a class="table__isbn" href="{{ url_for('book', isbn=book.isbn) }}">{{ book.isbn }}</a></td>
+                <td class="table__body-data">{{ book.title }}</td>
+                <td class="table__body-data">{{ book.author }}</td>
+                <td class="table__body-data">{{ book.year }}</td>
             </tr>
             {% endfor %}
         </tbody>

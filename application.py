@@ -143,8 +143,8 @@ def book(isbn):
     
     # Check status code
     if res.status_code != 200:
-        review_count = "Not found"
-        average_rating = "Not found"
+        review_count = False
+        average_rating = False
     else:
         # Parse JSON and retrieve values
         res = res.json()

@@ -6,6 +6,8 @@ A book review website where users sign up, search for books, and review them. Us
 
 *Note: As a challenge, JavaScript was not used.*
 
+Built with Python (Flask), SQL (Relational databases), Jinja, Goodreads API.
+
 ## API
 
 Available at: `/api/<isbn>`
